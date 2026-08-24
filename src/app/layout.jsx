@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <header className="py-2 md:w-11/12 mx-auto"><Navbar/></header>
-        <main className="py-2 md:w-11/12 mx-auto">{children}</main>
+        <main className="py-2 md:w-11/12 mx-auto min-h-screen">{children}</main>
         <footer><Footer/></footer>
         </body>
     </html>
