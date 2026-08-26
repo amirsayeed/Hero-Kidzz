@@ -1,7 +1,8 @@
 import React from 'react'
 // import products from "@/data/toys.json"
 import ProductCard from '../cards/ProductCard'
-import { getProducts } from '@/actions/server/product'
+import { getProducts } from '@/actions/server/product';
+
 const Products = async () => {
     const products = (await getProducts()) || [];
 
