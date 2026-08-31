@@ -1,11 +1,45 @@
 "use client";
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import SocialButton from './SocialButton';
+import { postUser } from '@/actions/server/auth';
+import { useSearchParams,useRouter  } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import Swal from 'sweetalert2';
 
 const RegisterForm = () => {
+  const params = useSearchParams();
+   const router = useRouter();
+   const callbackUrl = params.get("callbackUrl") || "/";
+   const [form, setForm] = useState({
+      name: "",
+      email: "",
+      password: "",
+    })
+
+   const handleChange = (e) => {
+    setForm({...form, [e.target.name]: e.target.value})
+   }
+
     const handleSubmit = async(e) =>{
         e.preventDefault();
+
+        const result = await postUser(form);
+        if(result.acknowledged){
+          const result = await signIn("credentials",{
+            email: form.email,
+            password: form.password,
+            redirect: false,
+            callbackUrl: callbackUrl
+          });
+          if(result.ok){
+            Swal.fire("success", "Registered successfully", "success")
+            router.push(callbackUrl)
+          }
+          else{
+            Swal.fire("error", "Sorry", "error")
+          }
+        }
     }
 
     return (
@@ -20,6 +54,7 @@ const RegisterForm = () => {
                 name="name"
                 placeholder="Full Name"
                 className="input input-bordered w-full"
+                onChange={handleChange}
                 required
               />
   
@@ -28,6 +63,7 @@ const RegisterForm = () => {
                 name="email"
                 placeholder="Email"
                 className="input input-bordered w-full"
+                onChange={handleChange}
                 required
               />
   
@@ -36,6 +72,7 @@ const RegisterForm = () => {
                 name="password"
                 placeholder="Password"
                 className="input input-bordered w-full"
+                onChange={handleChange}
                 required
               />
   

@@ -41,7 +41,7 @@ const ProductCard = ({ product }) => {
           <span className="text-sm text-gray-500">{sold} sold</span>
         </div>
 
-        <CartButton></CartButton>
+        <CartButton product={product}></CartButton>
         <Link
           href={`/products/${_id}`}
           className="btn btn-primary btn-outline mt-4 w-full"

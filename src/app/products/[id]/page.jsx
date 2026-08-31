@@ -101,7 +101,7 @@ const ProductDetails = async ({ params }) => {
         </div>
 
         {/* Actions */}
-        <CartButton></CartButton>
+        <CartButton product={product}></CartButton>
       </div>
       <div className="col-span-full">
         {/* Description */}

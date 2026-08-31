@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/layouts/Navbar";
 import Footer from "@/components/layouts/Footer";
 import localFont from 'next/font/local'
+import NextAuthProvider from "@/provider/NextAuthProvider";
  
 
 const poppins = Poppins({
@@ -90,15 +91,23 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    <NextAuthProvider>
     <html
       lang="en"
       className={`${poppins.className} antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <header className="py-2 md:w-11/12 mx-auto"><Navbar/></header>
-        <main className="py-2 md:w-11/12 mx-auto min-h-[calc(100vh-303px)]">{children}</main>
-        <footer><Footer/></footer>
+        <header className="py-2 md:w-11/12 mx-auto">
+          <Navbar/>
+        </header>
+        <main className="py-2 md:w-11/12 mx-auto min-h-[calc(100vh-303px)]">
+          {children}
+        </main>
+        <footer>
+          <Footer/>
+        </footer>
         </body>
     </html>
+    </NextAuthProvider>
   );
 }
