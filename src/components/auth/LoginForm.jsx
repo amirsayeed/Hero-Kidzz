@@ -17,7 +17,7 @@ const LoginForm = () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        const result = await signIn("credentials",{
+        const result = await signIn("credentials", {
           email,
           password,
           redirect: false,

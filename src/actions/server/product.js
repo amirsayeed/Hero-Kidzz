@@ -5,7 +5,10 @@ import { ObjectId } from "mongodb";
 
 export const getProducts = async () => {
   const products = await dbConnect(collections.PRODUCTS).find().toArray();
-  return products;
+  return products.map((product) => ({
+    ...product,
+    _id: product._id.toString(),
+  }));
 };
 
 export const getSingleProduct = async (id) => {
@@ -16,5 +19,5 @@ export const getSingleProduct = async (id) => {
 
   const product = await dbConnect(collections.PRODUCTS).findOne(query);
 
-  return { ...product, _id: product._id.toString() } || {};
+  return {...product, _id: product._id.toString()} || {};
 };

@@ -39,6 +39,8 @@ const RegisterForm = () => {
           else{
             Swal.fire("error", "Sorry", "error")
           }
+          // Swal.fire("success", "Registered successfully", "success")
+          // router.push('/login');
         }
     }
 

@@ -26,13 +26,15 @@ export const postUser = async(payload) =>{
     }
 
     const result = await dbConnect(collections.USERS).insertOne(newUser);
-    return {
-        ...result,
-        insertedId: result.insertedId?.toString()
+    if(result.acknowledged){
+        return {
+            ...result,
+            insertedId: result.insertedId?.toString()
+        }
     }
 }
 
-export const loginUser = async (payload) =>{
+export const loginUser = async(payload) =>{
     const {email, password, name} = payload;
     if(!email || !password) {
         return null;
