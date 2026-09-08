@@ -2,25 +2,49 @@
 
 import { decreaseItemDB, deleteItemsFromCart, increaseItemDB } from "@/actions/server/cart";
 import Image from "next/image";
+import { useState } from "react";
 import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 
 const CartItem = ({ item, removeItem, updateQuantity }) => {
   const { title, image, quantity, price, _id } = item;
+  const [loading, setLoading] = useState(false);
 
   const handleDeleteCart = async () =>{
-    alert("Delete Cart Item: " + _id);
-    const result = await deleteItemsFromCart(_id);
-    if(result.success){
-        Swal.fire("Success", "Item removed from cart", "success");
-        removeItem(_id);
-    }else{
-        Swal.fire("Error", "Failed to remove item from cart", "error");
+    setLoading(true);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, remove it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const result = await deleteItemsFromCart(_id);
+        if(result.success){
+          removeItem(_id);
+          Swal.fire({
+          title: "Deleted!",
+          text: "Item has been deleted.",
+          icon: "success"
+      })}else{
+          Swal.fire({
+            title: "Opps!",
+            text: "Something went wrong.",
+            icon: "error",
+          });
+      };
     }
+      setLoading(false);
+    });
   }
 
   const onIncrease = async () =>{
+    setLoading(true);
     const result = await increaseItemDB(_id, quantity);
 
     if(result.success){
@@ -29,16 +53,19 @@ const CartItem = ({ item, removeItem, updateQuantity }) => {
     }else{
         Swal.fire("Error", result.message || "Failed to increase item quantity", "error");
     }
+    setLoading(false);
   }
 
   const onDecrease = async()=>{
     const result = await decreaseItemDB(_id, quantity);
-
+    setLoading(true);
     if(result.success){
         Swal.fire("Success", "Item quantity decreased", "success");
         updateQuantity(_id, quantity - 1);
+        setLoading(false);
     }else{
         Swal.fire("Error", result.message || "Failed to decrease item quantity", "error");
+        setLoading(false);
     }
   }
 
@@ -64,7 +91,7 @@ const CartItem = ({ item, removeItem, updateQuantity }) => {
         <div className="flex items-center gap-2 mt-2">
           <button
             className="btn btn-xs btn-outline"
-            disabled={quantity === 1}
+            disabled={quantity === 1 || loading}
             onClick={onDecrease}
           >
             <FaMinus />
@@ -74,7 +101,7 @@ const CartItem = ({ item, removeItem, updateQuantity }) => {
 
           <button onClick={onIncrease}
             className="btn btn-xs btn-outline"
-            disabled={quantity === 10}
+            disabled={quantity === 10 || loading}
           >
             <FaPlus />
           </button>

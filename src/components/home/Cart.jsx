@@ -1,11 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CartItem from "../cards/CartItem";
 import Link from "next/link";
 
 const Cart = ({ cartItem = [] }) => {
   const [items, setItems] = useState(cartItem);
+
+  const totalItems = useMemo(()=> items.reduce((acc, item) => acc + item.quantity, 0), [items]);
+
+  const totalPrice = useMemo(()=> items.reduce((acc, item) => acc + item.price * item.quantity, 0), [items]);
 
   const removeItem = (id) => {
     setItems((prevItems) => prevItems.filter((item) => item._id != id));
@@ -60,11 +64,11 @@ const Cart = ({ cartItem = [] }) => {
           <div className="space-y-1 text-sm">
             <div className="flex justify-between">
               <span>Total Items</span>
-              <span></span>
+              <span>{totalItems}</span>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total Price</span>
-              <span>৳</span>
+              <span>৳{totalPrice.toFixed(2)}</span>
             </div>
           </div>
 
