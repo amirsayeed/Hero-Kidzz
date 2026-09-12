@@ -20,7 +20,7 @@ const LoginForm = () => {
         const result = await signIn("credentials", {
           email,
           password,
-          redirect: false,
+          // redirect: false,
           callbackUrl: callback
         })
 
@@ -69,7 +69,7 @@ const LoginForm = () => {
             <p className="text-center text-sm mt-4">
               Don’t have an account?{" "}
               <Link
-                href={`/register?callbackurl=${callback}`}
+                href={`/register?callbackUrl=${callback}`}
                 className="link link-primary"
               >
                 Register

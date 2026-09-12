@@ -4,9 +4,10 @@ import React from 'react';
 
 const CartPage = async() => {
     const cartItems = await getCart();
-    const formattedItems = cartItems.map(item =>({
+    const formattedItems = cartItems.map((item)=>({
         ...item,
-        _id: item._id.toString()
+        _id: item._id.toString(),
+        productId: item.productId.toString()
     }))
 
    
@@ -24,7 +25,7 @@ const CartPage = async() => {
                 </div>
             ) : (
                 <div className="space-y-4">
-                        <Cart cartItem={formattedItems} />
+                    <Cart cartItem={formattedItems} />
                 </div>
             )}
         </div>

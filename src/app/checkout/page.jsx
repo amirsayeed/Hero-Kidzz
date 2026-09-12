@@ -6,7 +6,8 @@ const CheckoutPage = async() => {
     const cartItems = await getCart();
     const formattedItems = cartItems.map(item =>({
         ...item,
-        _id: item._id.toString()
+        _id: item._id.toString(),
+        productId: item.productId.toString()
     }))
 
     return (
